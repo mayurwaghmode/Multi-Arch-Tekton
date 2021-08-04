@@ -1,0 +1,27 @@
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  name: remote-ssh-commands-run
+spec:
+  taskRef:
+    name: remote-ssh-commands
+  workspaces:
+    - name: credentials
+      secret:
+        secretName: remote-ssh-secret
+  params:
+    - name: HOST
+      value: "9.20.205.192"
+    - name: USERNAME
+      value: "cloudusr"
+    - name: SSH_SCRIPT
+      value: |
+        dnf install podman buildah -y
+        sudo podman run --rm --privileged multiarch/qemu-user-static --reset -p yes
+        git clone https://github.com/mayurwaghmode/tekton-taskrun.git
+        cd /root/tekton-taskrun/
+        buildah bud -f Dockerfile -t ubuntu6 .
+        buildah from localhost/ubuntu6
+        buildah commit ubuntu6-working-container ubuntu6
+        buildah login docker.io 
+        buildah push ubuntu6 mwaghmodepersistent/ubuntu6
