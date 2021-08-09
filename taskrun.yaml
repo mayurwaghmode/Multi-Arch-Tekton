@@ -11,17 +11,18 @@ spec:
         secretName: remote-ssh-secret
   params:
     - name: HOST
-      value: "9.20.205.192"
+      value: "169.63.181.242"
     - name: USERNAME
-      value: "cloudusr"
+      value: "root"
     - name: SSH_SCRIPT
       value: |
         dnf install podman buildah -y
         sudo podman run --rm --privileged multiarch/qemu-user-static --reset -p yes
+        rm -rf tekton-taskrun
         git clone https://github.com/mayurwaghmode/tekton-taskrun.git
         cd /root/tekton-taskrun/
-        buildah bud -f Dockerfile -t ubuntu6 .
-        buildah from localhost/ubuntu6
-        buildah commit ubuntu6-working-container ubuntu6
+        buildah bud -f Dockerfile -t ppc64le-container .
+        buildah from localhost/ppc64le-container
+        buildah commit ppc64le-container-working-container ppc64le-container
         buildah login docker.io 
-        buildah push ubuntu6 mwaghmodepersistent/ubuntu6
+        buildah push ppc64le-container mwaghmodepersistent/ppc64le-container
