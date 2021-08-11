@@ -19,7 +19,7 @@ spec:
         dnf install podman buildah -y
         sudo podman run --rm --privileged multiarch/qemu-user-static --reset -p yes
         rm -rf tekton-taskrun
-        git clone https://github.com/mayurwaghmode/tekton-taskrun.git
+        git clone https://github.com/mayurwaghmode/ppc64le-dockerfile.git
         cd /root/tekton-taskrun/
         buildah bud -f Dockerfile -t ppc64le-container .
         buildah from localhost/ppc64le-container
