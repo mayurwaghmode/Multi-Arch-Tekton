@@ -11,7 +11,7 @@ spec:
         secretName: remote-ssh-secret
   params:
     - name: HOST
-      value: "169.63.181.242"
+      value: "ip-address-of-remote-x86_64-vm"
     - name: USERNAME
       value: "root"
     - name: SSH_SCRIPT
