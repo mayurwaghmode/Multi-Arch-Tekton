@@ -24,9 +24,13 @@ spec:
     - name: USE_INSECURE_CIPHER
       type: string
       default: "false"
+    - name: TIMEOUT
+      type: string
+      default: "3h0m0s"
   steps:
     - name: ssh
-      image: docker.io/appleboy/drone-ssh:1.6.1@sha256:8252f5232316d832e14f259ed7b217d8d5f620d4668419d88ed47e1a48c0896a #tag: 1.6.1
+      image: quay.io/mayurwaghmode111/drone-ssh:ppc64le
+      #command_timeout: 1h0m0s
       workingDir: $(workspaces.credentials.path)
       script: |
 
@@ -38,4 +42,4 @@ spec:
         [[ -f ./ciphers ]] && cmd="$cmd --ciphers $(cat ./ciphers)"
         [[ $(params.USE_INSECURE_CIPHER) == "true" ]] && cmd="$cmd --useInsecureCipher true"
 
-        drone-ssh -H $(params.HOST) -p $(params.PORT) -u $(params.USERNAME) -s "$script" $cmd
+        drone-ssh -H $(params.HOST) -p $(params.PORT) -u $(params.USERNAME) -s "$script" $cmd -command.timeout $(params.TIMEOUT)
