@@ -30,7 +30,6 @@ spec:
   steps:
     - name: ssh
       image: quay.io/mayurwaghmode111/drone-ssh:ppc64le
-      #command_timeout: 1h0m0s
       workingDir: $(workspaces.credentials.path)
       script: |
 
