@@ -35,6 +35,6 @@ spec:
         buildah manifest add quay.io/mayurwaghmode111/application-service-testing quay.io/mayurwaghmode111/application-service-testing:ppc64le
         #buildah manifest add quay.io/mayurwaghmode111/application-service-testing quay.io/mayurwaghmode111/application-service-testing:s390x
         #buildah manifest add quay.io/mayurwaghmode111/application-service-testing quay.io/mayurwaghmode111/application-service-testing:arm64
-        buildah login -u mayurwaghmode111 -p Mpersistentchess@123 quay.io
+        buildah login -u ${{ secrets.QUAY_USER }} -p ${{ secrets.QUAY_PWD }} quay.io
         podman manifest push --all quay.io/mayurwaghmode111/application-service-testing quay.io/mayurwaghmode111/application-service-testing:multi-arch
         buildah manifest rm quay.io/mayurwaghmode111/application-service-testing
