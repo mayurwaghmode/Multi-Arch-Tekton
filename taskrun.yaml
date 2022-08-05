@@ -14,27 +14,18 @@ spec:
       value: 9.30.161.105
     - name: USERNAME
       value: "root"
-    - name: TIMEOUT
-      value: 1h0m0s
     - name: SSH_SCRIPT
       value: |
-        #buildah manifest rm quay.io/mayurwaghmode111/application-service-testing
         sudo podman run --rm --privileged docker.io/multiarch/qemu-user-static --reset -p yes
-        #rm -rf application-service
-        #git clone https://github.com/redhat-appstudio/application-service.git
+        rm -rf application-service
+        git clone https://github.com/redhat-appstudio/application-service.git
         cd application-service
         REPO=quay.io/mayurwaghmode111/application-service-testing
-        echo $REPO
         buildah bud --platform=linux/amd64   -t quay.io/mayurwaghmode111/application-service-testing:amd64
         buildah bud --platform=linux/ppc64le -t quay.io/mayurwaghmode111/application-service-testing:ppc64le
-        # buildah bud --platform=linux/s390x   -t quay.io/mayurwaghmode111/application-service-testing:s390x
-        #buildah bud --platform=linux/amd64   -t quay.io/mayurwaghmode111/application-service-testing:amd64
-        #buildah bud --platform=linux/arm64   -t quay.io/mayurwaghmode111/application-service-testing:arm64
         buildah manifest create quay.io/mayurwaghmode111/application-service-testing
         buildah manifest add quay.io/mayurwaghmode111/application-service-testing quay.io/mayurwaghmode111/application-service-testing:amd64
         buildah manifest add quay.io/mayurwaghmode111/application-service-testing quay.io/mayurwaghmode111/application-service-testing:ppc64le
-        #buildah manifest add quay.io/mayurwaghmode111/application-service-testing quay.io/mayurwaghmode111/application-service-testing:s390x
-        #buildah manifest add quay.io/mayurwaghmode111/application-service-testing quay.io/mayurwaghmode111/application-service-testing:arm64
         buildah login -u ${{ secrets.QUAY_USER }} -p ${{ secrets.QUAY_PWD }} quay.io
         podman manifest push --all quay.io/mayurwaghmode111/application-service-testing quay.io/mayurwaghmode111/application-service-testing:multi-arch
         buildah manifest rm quay.io/mayurwaghmode111/application-service-testing
