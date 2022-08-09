@@ -17,10 +17,9 @@ spec:
     - name: SSH_SCRIPT
       value: |
         sudo podman run --rm --privileged docker.io/multiarch/qemu-user-static --reset -p yes
-        rm -rf application-service
-        git clone https://github.com/mayurwaghmode/Multi-Arch-Tekton.git
+        rm -rf Multi-Arch-Tekton
+        git clone -b simple https://github.com/mayurwaghmode/Multi-Arch-Tekton.git
         cd Multi-Arch-Tekton
-        REPO=quay.io/mayurwaghmode111/multi-arch-tekton
         buildah bud --platform=linux/amd64   -t quay.io/mayurwaghmode111/multi-arch-tekton:amd64
         buildah bud --platform=linux/ppc64le -t quay.io/mayurwaghmode111/multi-arch-tekton:ppc64le
         buildah manifest create quay.io/mayurwaghmode111/multi-arch-tekton
